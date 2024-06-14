@@ -1,7 +1,24 @@
 # es-config-interface
 <i>es-config-interface
 
+FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.8+ based on standard Python.
+This is a repository that provides to deliver the records to the Prometheus-Export application.
+
 ES Configuration for Prometheus(https://github.com/euiyounghwang/prometheus-export) to send an email or other things
+
+
+### Install Poerty
+```
+https://python-poetry.org/docs/?ref=dylancastillo.co#installing-with-the-official-installer
+```
+
+
+### Using Python Virtual Environment
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
 
 #### Python V3.9 Install
 ```bash
@@ -66,8 +83,8 @@ Description=ES Config Interface Service
 User=devuser
 Group=devuser
 Type=simple
-ExecStart=/bin/bash /home/devuser/sparkjob_interface_api/service-start.sh
-ExecStop= /usr/bin/killall sparkjob_interface_api
+ExecStart=/bin/bash /home/devuser/es_config_interface/service-start.sh
+ExecStop= /usr/bin/killall /es_config_interface_interface_api
 
 [Install]
 WantedBy=default.target

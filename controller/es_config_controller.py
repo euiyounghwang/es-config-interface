@@ -1,15 +1,11 @@
 from fastapi import APIRouter
 import json
 import datetime
-from injector import logger, JobHandlerInject
+from injector import logger, ESConfigHandlerInject
 from service.status_handler import (StatusHanlder, StatusException)
 # from typing import Optional
-import pandas as pd
-from fastapi.responses import StreamingResponse
 import datetime
 from io import BytesIO
-import xlsxwriter
-
 
 
 ''' Enter the host name of the master node in the spark cluster to collect the list of running spark jobs. '''
@@ -37,20 +33,20 @@ async def get_db_query(es_url="http://localhost:9200"):
 '''
 
 
-@app.get("/get_prometheus_es_config", 
+@app.get("/get_mail_config", 
           status_code=StatusHanlder.HTTP_STATUS_200,
         #   responses={
         #     200: {"description" : "OK"},
         #     404 :{"description" : "URl not found"}
         #   },
-          description="Sample Payload : http://localhost:8003/spark/get_active_spark_job?spark_url=http://localhost:8080/json", 
-          summary="Get json for email")
-async def get_active_spark_job(spark_url="http://localhost:8080/json"):
+          description="Sample Payload : ", 
+          summary="Get json for prometheus export email")
+async def get_hostname_from_domain_controller():
     ''' get json config file from local disk '''
    
-    # response =  await JobHandlerInject.get_active_spark_job(spark_url)
-    # if isinstance(response, dict):
-    #     logger.info('get_active_spark_job - {}'.format(json.dumps(response, indent=2)))
+    response =  await ESConfigHandlerInject.get_hostname_from_domain()
+    if isinstance(response, dict):
+        logger.info('get_hostname_from_domain_controller - {}'.format(json.dumps(response, indent=2)))
 
     return {}
 

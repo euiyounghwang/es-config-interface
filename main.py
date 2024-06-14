@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
-from controller import es_config_controller, download_controller
+from controller import es_config_controller
 from config.log_config import create_log
 
 logger = create_log()
@@ -77,4 +77,4 @@ async def root_with_param(id):
 
 # router
 ''' Enter the host name of the master node in the spark cluster to collect the list of running spark jobs. '''
-app.include_router(es_config_controller.app, tags=["ES Configuration API"], )
+app.include_router(es_config_controller.app, tags=["Prometheus Configuration API"], )
