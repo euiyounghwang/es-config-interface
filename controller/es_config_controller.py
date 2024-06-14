@@ -35,10 +35,10 @@ async def get_db_query(es_url="http://localhost:9200"):
 
 @app.get("/get_mail_config", 
           status_code=StatusHanlder.HTTP_STATUS_200,
-        #   responses={
-        #     200: {"description" : "OK"},
-        #     404 :{"description" : "URl not found"}
-        #   },
+          responses={
+            200: {"description" : "OK"},
+            404 :{"description" : "URl not found"}
+          },
           description="Sample Payload : http://localhost:8004/config/get_mail_config, Please change the json file if you want to change to '/home/biadmin/es_config_interface/repository/config.json", 
           summary="Get prometheus export mail configuration")
 async def get_mail_config():
