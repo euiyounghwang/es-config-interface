@@ -12,22 +12,17 @@ logger = create_log()
 
 
 # read host file to make an dict in memory
-def read_host_domain(server_file):
-    sparkjob_list = []
-    with open(server_file) as data_file:
-        for line in data_file:
-            if '#' in line:
-                continue
-            line = line.strip().split("|")
-            # print(f"{line}")
-            sparkjob_list.append(line)
-    return sparkjob_list
+def read_config_json(path):
+    with open(path, "r") as read_file:
+        data = json.load(read_file)
+        return data
 
-
+"""
 ''' get all hots '''
-hosts = read_host_domain("./repository/hosts")
+hosts = read_config_json("./repository/config.json")
 ''' hosts = ['localhost', 'dev',...] '''
 logger.info(list(hosts))
 # es_hosts_enum_list =list(hosts.keys())
+"""
 
-ESConfigHandlerInject = ESConfigHandler(logger, hosts)
+ESConfigHandlerInject = ESConfigHandler(logger)
