@@ -1,12 +1,5 @@
 {
-    "localhost": {
-        "mail_list": "test@x.com",
-        "env" : "Dev",
-        "is_mailing": true
-    },
-    "dev": {
-        "mail_list": "test@y.com",
-        "env": "Localhost",
-        "is_mailing": true
+    "config": {
+        "disk_usage_percentage_threshold": 90
     }
 }

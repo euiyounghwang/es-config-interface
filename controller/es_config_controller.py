@@ -39,7 +39,7 @@ async def get_db_query(es_url="http://localhost:9200"):
             200: {"description" : "OK"},
             404 :{"description" : "URl not found"}
           },
-          description="Sample Payload : http://localhost:8004/config/get_mail_config, Please change the json file if you want to change to '/home/biadmin/es_config_interface/repository/config.json", 
+          description="Sample Payload : http://localhost:8004/config/get_mail_config, Please change the json file if you want to change to '/home/biadmin/es_config_interface/repository/mail_config.json", 
           summary="Get prometheus export mail configuration")
 async def get_mail_config():
     ''' get json config file from local disk '''
@@ -47,6 +47,24 @@ async def get_mail_config():
     response =  await ESConfigHandlerInject.get_service_mail_config()
     if isinstance(response, dict):
         logger.info('get_mail_config - {}'.format(json.dumps(response, indent=2)))
+
+    return response
+
+
+@app.get("/get_gloabl_config", 
+          status_code=StatusHanlder.HTTP_STATUS_200,
+          responses={
+            200: {"description" : "OK"},
+            404 :{"description" : "URl not found"}
+          },
+          description="Sample Payload : http://localhost:8004/config/get_gloabl_config, Please change the json file if you want to change to '/home/biadmin/es_config_interface/repository/config.json", 
+          summary="Get prometheus export global configuration")
+async def get_global_config():
+    ''' get json config file from local disk '''
+   
+    response =  await ESConfigHandlerInject.get_service_global_config()
+    if isinstance(response, dict):
+        logger.info('get_global_config - {}'.format(json.dumps(response, indent=2)))
 
     return response
 
