@@ -31,8 +31,7 @@ class Search(BaseModel):
             
     def to_json(self):
         return {
-            'dev' : self.tsgvm00875,
-            'localhost' : self.tsgvm02738
+            'localhost' : self.localhost
         }
     
     '''
