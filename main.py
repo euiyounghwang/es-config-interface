@@ -3,6 +3,8 @@ from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
 from controller import es_config_controller
 from config.log_config import create_log
+from threading import Thread
+import time
 
 logger = create_log()
 app = FastAPI(
@@ -46,6 +48,13 @@ def custom_openapi():
 app.openapi = custom_openapi
 
 
+def start_worker():
+    while True:
+        print('[main]: starting worker...')
+        time.sleep(10)
+        
+        
+    
 ''' http://localhost:8100/docs '''
 
 @app.get("/", tags=['API'],  
@@ -78,3 +87,7 @@ async def root_with_param(id):
 # router
 ''' Enter the host name of the master node in the spark cluster to collect the list of running spark jobs. '''
 app.include_router(es_config_controller.app, tags=["Prometheus Configuration API"], )
+
+_worker_thread = Thread(target=start_worker, daemon=False)
+_worker_thread.start()
+
