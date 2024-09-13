@@ -12,28 +12,17 @@ class Sort_Order(str, Enum):
     asc = 'ASC'
     
 
-class Config_Detail(BaseModel):
-    mail_list: str = "test"
-    is_mailing: bool = True
-    env: str
 
+class Alert(BaseModel):
+    env: str = "prod1"
+    alert: str = "false"
+        
     def to_json(self):
         return {
-            'mail_list' : self.mail_list,
-            'is_mailing' : self.is_mailing
+            'env' : str(self.env).lower(),
+            'alert' : str(self.alert).lower()
         }
-
-
-class Search(BaseModel):
-    # localhost: List[Config_Detail]
-    dev: Config_Detail
-    localhost: Config_Detail
             
-    def to_json(self):
-        return {
-            'localhost' : self.localhost
-        }
-    
     '''
     def to_json(self): 
         return  {

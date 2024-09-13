@@ -56,6 +56,10 @@ pip install pytz
 
 ### Using Poetry: Create the virtual environment in the same directory as the project and install the dependencies:
 ```bash
+
+# gunicorn WSGI with async uvicorn
+# https://chaechae.life/blog/fastapi-deployment-gunicorn
+
 python -m venv .venv
 source .venv/bin/activate
 pip install poetry
@@ -68,6 +72,30 @@ poetry add uvicorn
 poetry add pytz
 poetry add httpx
 poetry add requests
+...
+
+# start with gunicorn config
+gunicorn.config.py
+
+import multiprocessing
+ 
+workers = multiprocessing.cpu_count() * 2 + 1
+worker_class = "uvicorn.workers.UvicornWorker"
+wsgi_app = "app.main:app"
+timeout = 60
+loglevel = "info"
+bind = "0.0.0.0:8000"
+max_requests = 1000
+max_requests_jitter = 100
+
+...
+gunicorn -c app/gunicorn.config.py
+
+gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8004 --workers 4
+
+..
+uvicorn app.main:app --reload for dev
+
 ```
 or you can run this shell script `./create_virtual_env.sh` to make an environment. then go to virtual enviroment using `source .venv/bin/activate`
 

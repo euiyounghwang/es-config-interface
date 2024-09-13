@@ -17,7 +17,7 @@ class StatusException(object):
     @staticmethod
     def raise_exception(e):
         return JSONResponse(
-            status_code=StatusHanlder.HTTP_STATUS_404,
+            status_code=StatusHanlder.HTTP_STATUS_500,
             content={"message": str(e)}
         )
         # return {

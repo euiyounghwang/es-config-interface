@@ -88,6 +88,6 @@ async def root_with_param(id):
 ''' Enter the host name of the master node in the spark cluster to collect the list of running spark jobs. '''
 app.include_router(es_config_controller.app, tags=["Prometheus Configuration API"], )
 
-_worker_thread = Thread(target=start_worker, daemon=False)
-_worker_thread.start()
+# _worker_thread = Thread(target=start_worker, daemon=False)
+# _worker_thread.start()
 

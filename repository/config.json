@@ -1,5 +1,8 @@
 {
     "config": {
-        "disk_usage_percentage_threshold": 90
+      "es_cpu_percentage_threshold": 85,
+      "es_jvm_percentage_threshold": 85,
+      "disk_usage_percentage_threshold": 85,
+      "es_cluster_call_protocol_https": ""
     }
 }

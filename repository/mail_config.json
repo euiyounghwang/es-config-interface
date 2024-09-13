@@ -1,13 +1,21 @@
 {
-    "thread_interval" : 60,
-    "localhost": {
-        "mail_list": "test@x.com",
-        "env" : "Dev",
-        "is_mailing": true
-    },
-    "dev": {
-        "mail_list": "test@y.com",
-        "env": "Localhost",
-        "is_mailing": true
-    }
+  "alert_exclude_time": "00:00:00,00:10:00",
+  "localhost": {
+    "mail_list": "test@y.com",
+    "cc_list": "test@y.com",
+    "sms_list": "test@txt.att.net",
+    "env": "Localhost",
+    "thread_interval": 10,
+    "is_mailing": true,
+    "is_sms": true
+  },
+  "dev": {
+    "mail_list": "test@y.com",
+    "cc_list": "test@y.com",
+    "sms_list": "test@txt.att.net",
+    "env": "dev",
+    "thread_interval": 10,
+    "is_mailing": false,
+    "is_sms": false
+  }
 }
