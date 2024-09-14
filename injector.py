@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import json
 import os
 from service.es_config_handler import ESConfigHandler
+from service.es_download_handler import JobHandler
 
 load_dotenv()
     
@@ -26,3 +27,4 @@ logger.info(list(hosts))
 """
 
 ESConfigHandlerInject = ESConfigHandler(logger)
+JobHandlerInject = JobHandler(logger)

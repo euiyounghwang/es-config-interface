@@ -5,6 +5,7 @@ from util.es_util import json_read_config
 import json
 from service.redis_service import Redis_Client
 import os
+import socket
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,6 +17,21 @@ class ESConfigHandler(object):
         self.logger = logger
         # self.hosts = hosts
         self.ALERT_VALIDATE = ["true", "false"]
+
+
+    async def get_host_by_ipaddress(self, data):
+        ''' return {"127.0.0.1" : "localhost"}'''
+        try:
+            ip_host_dict = {}
+            host_name_lists = list(data.keys())
+            for each_host in host_name_lists:
+                ip_host_dict.update({socket.gethostbyname(each_host) : each_host})
+
+            return json.loads(ip_host_dict)
+        
+        except Exception as e:
+           return StatusException.raise_exception(str(e))
+
 
     async def write_repository_file(self, data):
         try:
@@ -49,6 +65,19 @@ class ESConfigHandler(object):
             # print(f"get_service_mail_config : {hosts}")
                         
             ''' get ./repositoy/mail_config.json '''
+            # ip_host_dict = await self.get_host_by_ipaddress(hosts)
+
+            # if client_ip not in ip_host_dict.keys():
+            #     return {}
+            # if client_ip not in hosts.keys():
+            #     return {}
+            
+            # reset_mail_dict = {
+            #     "alert_exclude_time" : hosts.get("alert_exclude_time"),
+            #     ip_host_dict.get(client_ip) : hosts.get(ip_host_dict.get(client_ip))
+            # }
+
+            # return reset_mail_dict
             return hosts
         
         except Exception as e:

@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 import json
 import datetime
 from injector import logger, ESConfigHandlerInject
@@ -6,6 +6,7 @@ from service.status_handler import (StatusHanlder, StatusException)
 # from typing import Optional
 import datetime
 from repository.schema import Alert
+
 
 
 ''' Enter the host name of the master node in the spark cluster to collect the list of running spark jobs. '''
@@ -41,14 +42,15 @@ async def get_db_query(es_url="http://localhost:9200"):
           },
           description="Sample Payload : GET http://localhost:8004/config/get_mail_config, Please change the json file if you want to change to '/home/biadmin/es_config_interface/repository/mail_config.json", 
           summary="Get prometheus export mail configuration")
-async def get_mail_config():
+async def get_mail_config(request: Request):
     ''' get json config file from local disk '''
    
-    response =  await ESConfigHandlerInject.get_service_mail_config()
+    response =  await ESConfigHandlerInject.get_service_mail_config(request.client.host)
+    # ip_by_host = await ESConfigHandlerInject.get_host_by_ipaddress(response)
     if isinstance(response, dict):
-        # logger.info('get_mail_config - {}'.format(json.dumps(response, indent=2)))
-        logger.info('get_mail_config - response alert configuratiohn[{}]'.format(len(response)))
-
+        # logger.info('ip_by_host [{}]'.format(ip_by_host))
+        logger.info('Remote IP Address = {}, get_mail_config - Alert configuratiohn [alert_exclude_time : {}]'.format(request.client.host, response.get("alert_exclude_time")))
+        
     return response
 
 
