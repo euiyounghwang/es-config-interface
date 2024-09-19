@@ -9,7 +9,6 @@ from repository.schema import Alert
 
 
 
-''' Enter the host name of the master node in the spark cluster to collect the list of running spark jobs. '''
 app = APIRouter(
     prefix="/config",
 )
@@ -45,11 +44,12 @@ async def get_db_query(es_url="http://localhost:9200"):
 async def get_mail_config(request: Request):
     ''' get json config file from local disk '''
    
-    response =  await ESConfigHandlerInject.get_service_mail_config(request.client.host)
+    """request.client.host"""
+    response =  await ESConfigHandlerInject.get_service_mail_config()
     # ip_by_host = await ESConfigHandlerInject.get_host_by_ipaddress(response)
     if isinstance(response, dict):
         # logger.info('ip_by_host [{}]'.format(ip_by_host))
-        logger.info('Remote IP Address = {}, get_mail_config - Alert configuratiohn [alert_exclude_time : {}]'.format(request.client.host, response.get("alert_exclude_time")))
+        logger.info('Remote IP Address = {}, get_mail_config [alert_exclude_time : {}]'.format(request.client.host, response.get("alert_exclude_time")))
         
     return response
 
@@ -93,6 +93,7 @@ async def get_host_info():
     return response
 """
 
+"""
 @app.post("/update_mail_config", 
           status_code=StatusHanlder.HTTP_STATUS_200,
           responses={
@@ -120,7 +121,8 @@ async def set_mail_config(request: Alert):
         logger.info('set_mail_config [response] - {}'.format(response))
 
     return response
-    
+ """
+
 
 @app.post("/update_alert_config", 
           status_code=StatusHanlder.HTTP_STATUS_200,
@@ -129,8 +131,8 @@ async def set_mail_config(request: Alert):
             500 :{"description" : "Unexpected error"}
           },
           description="Sample Payload : POST http://localhost:8004/config/update_alert_config", 
-          summary="Return POST alert results for writing json file via jobs with Cache")
-async def set_alert_config(request: Alert):
+          summary="Alert to update a configuration json via jobs during Security Patching")
+async def set_alert_config(request_ip: Request, request: Alert):
     ''' 
     test curl
     curl -X 'POST'   'http://localhost:8004/config/update_alert_config' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{
@@ -140,7 +142,7 @@ async def set_alert_config(request: Alert):
 
     '''
     request_json = request.to_json()
-    response =  await ESConfigHandlerInject.set_service_alert_config(request_json)
+    response =  await ESConfigHandlerInject.set_service_alert_config(request_ip.client.host, request_json)
     if isinstance(response, dict):
         # logger.info('set_alert_config [response] - {}'.format(json.dumps(response, indent=2)))
         logger.info('set_alert_config [response] - {}'.format(response))

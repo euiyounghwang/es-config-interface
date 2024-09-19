@@ -62,7 +62,8 @@ do
     echo "Alert Updatinng.. "$env_name  
     JSON_STRING="{
         \"env\" : \"$env_name\",
-        \"alert\" : \"$alert\"
+        \"alert\" : \"$alert\",
+        \"message\" : \"ES TEAM SCRIPT\"
     }"
 
     echo $JSON_STRING > a.out
@@ -79,6 +80,7 @@ do
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $response" >> $log_file
 done
 
+: <<'END'
 # Validate
 curl_host="http://$host:8004/config/get_mail_config"
 
@@ -92,3 +94,4 @@ if [[ -n "$ALL_JSON" ]]; then
    $ALL_JSON | python -mjson.tool
 EOF
 fi
+END

@@ -13,7 +13,6 @@ import xlsxwriter
 import pandas as pd
 
 
-''' Enter the host name of the master node in the spark cluster to collect the list of running spark jobs. '''
 app = APIRouter(
     prefix="/download",
 )

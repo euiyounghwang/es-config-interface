@@ -16,11 +16,13 @@ class Sort_Order(str, Enum):
 class Alert(BaseModel):
     env: str = "prod1"
     alert: str = "false"
+    message: str = 'Security Patching'
         
     def to_json(self):
         return {
             'env' : str(self.env).lower(),
-            'alert' : str(self.alert).lower()
+            'alert' : str(self.alert).lower(),
+            'message' : str(self.message)
         }
             
     '''
@@ -40,3 +42,16 @@ class Alert(BaseModel):
     '''
     
 
+class Log(BaseModel):
+    env: str = "prod1"
+    host_name: str = "localhost"
+    status: str = "ES_RESTARTED"
+    message: str = 'TEST MESSAGE'
+        
+    def to_json(self):
+        return {
+            'env' : str(self.env).lower(),
+            'host_name' : str(self.host_name).lower(),
+            'status' : str(self.status).upper(),
+            'message' : str(self.message)
+        }

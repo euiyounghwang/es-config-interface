@@ -5,6 +5,7 @@ import json
 import os
 from service.es_config_handler import ESConfigHandler
 from service.es_download_handler import JobHandler
+from service.es_log_handler import ESLogConfigHandler
 
 load_dotenv()
     
@@ -28,3 +29,4 @@ logger.info(list(hosts))
 
 ESConfigHandlerInject = ESConfigHandler(logger)
 JobHandlerInject = JobHandler(logger)
+ESLogHandlerInject = ESLogConfigHandler(logger)

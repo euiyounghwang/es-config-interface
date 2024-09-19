@@ -6,17 +6,22 @@ import json
 from service.redis_service import Redis_Client
 import os
 import socket
+from service.db import database
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 class ESConfigHandler(object):
     
     def __init__(self, logger):
         ''' Get the number of hosts from the file to generate a excel file included active spark jobs'''
         self.logger = logger
-        # self.hosts = hosts
         self.ALERT_VALIDATE = ["true", "false"]
+        # DB
+        self.user = os.getenv('LOG_DB_USER')
+        self.db_url = os.getenv('LOG_DB_URL')
+        self.insert_alert_sql = os.getenv('INSERT_ALERT_SQL')
 
 
     async def get_host_by_ipaddress(self, data):
@@ -179,16 +184,17 @@ class ESConfigHandler(object):
         
 
 
-    async def set_service_alert_config(self, request_json):
+    async def set_service_alert_config(self, client_ip, request_json):
         ''' Update alert value and save json file via jobs with Cache'''
         redis_client = None
+        alert_updated = False
         try:
             print(f"request_json : {request_json}")
             
             env_name = str(request_json.get("env")).lower()
             alert_bool_option = str(request_json.get("alert")).lower()
             
-            print(f"env_name : {env_name}, alert_bool_option : {alert_bool_option}")
+            self.logger.info(f"client_ip : {client_ip}, env_name : {env_name}, alert_bool_option : {alert_bool_option}")
 
             ''' --------------- '''
             ''' Validate true/false value from the parameter'''
@@ -217,6 +223,7 @@ class ESConfigHandler(object):
 
             ''' check'''
             if redis_client.Get_Memory_dict(env_name):
+                alert_updated = True
                 return {"message": "Updated the alert [{}] successfully.".format(str(alert_bool_option).lower())}
             else:
                 return StatusException.raise_exception(f"{request_json.get('env')} env doesn't exist in configuration")
@@ -229,3 +236,14 @@ class ESConfigHandler(object):
             if redis_client:
                 redis_client.Set_Close()
         
+            ''' Insert log if alert was updated correctly'''
+            if alert_updated:
+                ''' Save this log to H2 database'''
+                db_obj = database(self.logger, self.user, self.db_url)
+                db_obj.set_db_connection()
+                ''' ALERT (ENV_NAME, IS_MAILING, IP_ADDRESS, LOG) VALUES('DEV', 'TRUE', '127.0.0.1', 'TEST MESSAGE');'''
+                self.logger.info("{},{},{},{}".format(str(env_name).upper(), str(alert_bool_option).upper(), str(client_ip), str(request_json.get("message",""))))
+                result_dict = db_obj.excute_oracle_query(self.insert_alert_sql.format(str(env_name).upper(), str(alert_bool_option).upper(), str(client_ip), str(request_json.get("message",""))))
+                self.logger.info("result_dict for logs - {}".format(result_dict))
+
+                db_obj.set_db_disconnection()
