@@ -215,7 +215,8 @@ class ESConfigHandler(object):
             redis_client.Set_Connect()
             ''' update key,.value paris to Cache'''
             security_patching_json = {
-                "alert" : alert_bool_option
+                "alert" : alert_bool_option,
+                "message" : str(request_json.get("message"))
             }
             # security_patching_json = json.dumps(payload, ensure_ascii=False).encode('utf-8')
             ''' set key value'''
