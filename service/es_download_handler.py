@@ -101,17 +101,23 @@ class JobHandler(object):
             for each_host in host_list:
                 host = each_host.split(":")[1]
                 env_name = each_host.split(":")[0]
-                resp = requests.get(url="http://{}:9115/metrics".format(host), timeout=5)
-                            
-                if not (resp.status_code == 200):
-                    ''' save failure node with a reason into saved_failure_dict'''
-                    self.logger.error(f"get_metrics_from_expoter_app port do not reachable")
-                    
-                self.logger.info(f"resp : {resp}")
 
-                ''' extract content'''
-                prometheus_json = await self.transform_prometheus_txt_to_Json(host, env_name, resp, 'node_disk_space_metric')
-                disk_usage_host_list.append(prometheus_json)
+                try:
+                    resp = requests.get(url="http://{}:9115/metrics".format(host), timeout=5)
+                                
+                    if not (resp.status_code == 200):
+                        ''' save failure node with a reason into saved_failure_dict'''
+                        self.logger.error(f"get_metrics_from_expoter_app port do not reachable")
+                        
+                    self.logger.info(f"resp : {resp}")
+
+                    ''' extract content'''
+                    prometheus_json = await self.transform_prometheus_txt_to_Json(host, env_name, resp, 'node_disk_space_metric')
+                    disk_usage_host_list.append(prometheus_json)
+                
+                except Exception as e:
+                    self.logger.error(e)
+                    pass
 
             # self.logger.info(f"disk_usage_host_list : {json.dumps(disk_usage_host_list, indent=2)}")  
 
@@ -120,3 +126,4 @@ class JobHandler(object):
         
         except Exception as e:
             self.logger.error(e)
+            
