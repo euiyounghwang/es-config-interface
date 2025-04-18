@@ -3,7 +3,9 @@
 #!/bin/bash
 set -e
 
-JAVA_HOME=~/openlogic-openjdk-11.0.23+9-linux-x64
+#JAVA_HOME=~/openlogic-openjdk-11.0.23+9-linux-x64
+#export PATH=$JAVA_HOME/bin:$PATH
+JAVA_HOME='C:\java-17-openjdk-17.0.14.0.7-1.win.jdk.x86_64'
 export PATH=$JAVA_HOME/bin:$PATH
 export JAVA_HOME
 
@@ -27,7 +29,7 @@ fi
 #  sudo netstat -nlp | grep :8100
 # nohup $SCRIPTDIR/service-start.sh &> /dev/null &
 
-python -m uvicorn main:app --reload --host=0.0.0.0 --port=8004 --workers 1
+python -m uvicorn main:app --reload --host=0.0.0.0 --port=8004 --workers 2
 
 #- https://chaechae.life/blog/fastapi-deployment-gunicorn
 #gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8004 --workers 4

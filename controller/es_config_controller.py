@@ -62,13 +62,13 @@ async def get_mail_config(request: Request):
           },
           description="Sample Payload : GET http://localhost:8004/config/get_gloabl_config, Please change the json file if you want to change to '/home/biadmin/es_config_interface/repository/config.json", 
           summary="Get prometheus export global configuration")
-async def get_global_config():
+async def get_global_config(request: Request ):
     ''' get json config file from local disk '''
-   
+    
     response =  await ESConfigHandlerInject.get_service_global_config()
     if isinstance(response, dict):
         # logger.info('get_global_config - {}'.format(json.dumps(response, indent=2)))
-        logger.info('get_mail_config - response global config with host info[{}]'.format(len(response)))
+        logger.info('get_mail_config - response global config with host info[{}]'.format(request.client.host))
 
     return response
 
@@ -147,6 +147,33 @@ async def set_alert_config(request_ip: Request, request: Alert):
         # logger.info('set_alert_config [response] - {}'.format(json.dumps(response, indent=2)))
         logger.info('set_alert_config [response] - {}'.format(response))
 
+    return response
+
+
+@app.get("/update_alert_config", 
+          status_code=StatusHanlder.HTTP_STATUS_200,
+          responses={
+            200: {"description" : "OK"},
+            500 :{"description" : "Unexpected error"}
+          },
+          description="Sample Payload : GET http://localhost:8004/config/update_alert_config", 
+          summary="Alert to update a configuration json via jobs during Security Patching")
+async def set_alert_config_via_url(request_ip: Request, env='dev', alert='false'):
+    ''' get json config file from local disk '''
+    
+    logger.info(f"Request IP : {request_ip.client.host}, env : {env}, alert : {alert}")
+    request_json = {
+        "env": str(env).lower(), 
+        "alert": str(alert).lower(),
+        "message": "Security Patching" 
+    }
+    logger.info(f"request_json : {json.dumps(request_json, indent=2)}")
+    response =  await ESConfigHandlerInject.set_service_alert_config(request_ip.client.host, request_json)
+    if isinstance(response, dict):
+        # logger.info('set_alert_config [response] - {}'.format(json.dumps(response, indent=2)))
+        logger.info('set_alert_config [response] - {}'.format(response))
+
+    # return {}
     return response
 
 """
