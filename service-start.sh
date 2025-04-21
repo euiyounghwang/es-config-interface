@@ -24,6 +24,7 @@ else
     source $VENV/Scripts/activate
 fi
 
+export PYTHONDONTWRITEBYTECODE=1
 
 # -- background
 #  sudo netstat -nlp | grep :8100
