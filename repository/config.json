@@ -3,6 +3,8 @@
       "es_cpu_percentage_threshold": 85,
       "es_jvm_percentage_threshold": 85,
       "disk_usage_percentage_threshold": 85,
-      "es_cluster_call_protocol_https": ""
+      "es_cluster_call_protocol_https": "",
+      "grafana_dashboard_url": "http://localhost:3000/d/bej7xvnzl70n4b/es-team-dashboard?orgId=1&refresh=5s",
+      "streaming_process" : "StreamProcess_A_EXP,StreamProcess_B_EXP"
     }
 }
