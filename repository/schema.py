@@ -42,6 +42,25 @@ class Alert(BaseModel):
     '''
     
 
+class Push_Alert(BaseModel):
+    ''' Push alert via email using the endpoint'''
+    env: str = "dev"
+    to_user: str = "to@localhost.com"
+    cc_user: str = "cc@localhost.com"
+    subject: str = "Prometheus Monitoring Alert"
+    message: str = 'Push Alert'
+        
+    def to_json(self):
+        return {
+            'env' : str(self.env).lower(),
+            'to_user' : self.to_user,
+            'cc_user' : self.cc_user,
+            'subject' : self.subject,
+            'message' : self.message
+        }
+    
+    
+
 class Log(BaseModel):
     env: str = "prod1"
     host_name: str = "localhost"

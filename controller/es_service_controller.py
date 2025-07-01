@@ -5,8 +5,7 @@ from injector import logger, ESServiceHandlerInject
 from service.status_handler import (StatusHanlder, StatusException)
 # from typing import Optional
 import datetime
-from repository.schema import Alert
-
+from repository.schema import Alert, Push_Alert
 
 
 app = APIRouter(
@@ -52,6 +51,31 @@ async def get_es_service_api(request: Request, es_host="http://localhost:9200"):
     return response
 
 
+@app.post("/push_alert_mail", 
+          status_code=StatusHanlder.HTTP_STATUS_200,
+          responses={
+            200: {"description" : "OK"},
+            500 :{"description" : "Unexpected error"}
+          },
+          description="Sample Payload : POST http://localhost:8004/service/push_alert_mail", 
+          summary="Push alert via email")
+async def push_alert_mail(request_ip: Request, request: Push_Alert):
+    ''' 
+    test curl
+    curl -X 'POST'   'http://localhost:8004/config/update_alert_config' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{
+      "env": "dev",
+      "alert": "false"
+    }'
+
+    '''
+    request_json = request.to_json()
+    logger.info('Remote IP Address = {}, push_alert_mail: {}]'.format(request_ip.client.host, request_json))
+    response =  await ESServiceHandlerInject.get_push_alert_act(request_json)
+    if isinstance(response, dict):
+        logger.info('push_alert_mail [response] - {}'.format(response))
+
+    return response
+   
 
 """
 @app.post("/set_mail_config", 
