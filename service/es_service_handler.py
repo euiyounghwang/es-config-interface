@@ -4,7 +4,6 @@ from service.status_handler import StatusException
 import json
 import os
 import socket
-from datetime import datetime
 import OpenSSL
 import ssl
 
@@ -39,13 +38,14 @@ class ESServiceHandler(object):
             timestamp = bytes.decode('utf-8')
             # print (datetime.strptime(timestamp, '%Y%m%d%H%M%S%z').date().isoformat())
             # print(datetime.strptime(timestamp, '%Y%m%d%H%M%S%z'))
-            ssl_expire_date = datetime.strptime(timestamp, '%Y%m%d%H%M%S%z')
+            ssl_expire_date = datetime.datetime.strptime(timestamp, '%Y%m%d%H%M%S%z')
             ssl_expire_date = "{}-{}-{}".format(str(ssl_expire_date.year).zfill(2), str(ssl_expire_date.month).zfill(2), str(ssl_expire_date.day).zfill(2))
         
             response_dict.update({"ssl_certs_expire_date" : ssl_expire_date})
             response_dict.update({"ssl_certs_expire_yyyymmdd" : int(ssl_expire_date.replace("-",""))})
         
         except Exception as e:
+           self.logger.error(e)
            response_dict.update({"ssl_certs_expire_date" : 'no_ssl_certs'})
            response_dict.update({"ssl_certs_expire_yyyymmdd" : 0})
            return StatusException.raise_exception(str(e))
