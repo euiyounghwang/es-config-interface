@@ -54,6 +54,25 @@ async def get_mail_config(request: Request):
     return response
 
 
+@app.get("/get_mail_config_from_env", 
+          status_code=StatusHanlder.HTTP_STATUS_200,
+          responses={
+            200: {"description" : "OK"},
+            500 :{"description" : "Unexpected error"}
+          },
+          description="Sample Payload : GET http://localhost:8004/config/get_mail_config_from_env", 
+          summary="Get prometheus export mail configuration for the particular env")
+async def get_mail_config_from_env(request: Request, host="test"):
+    ''' get json config file from local disk '''
+   
+    """request.client.host"""
+    response =  await ESConfigHandlerInject.get_service_mail_config_from_env(host)
+    if isinstance(response, dict):
+        logger.info('Remote IP Address = {}, get_mail_config_from_env [alert_exclude_time : {}]'.format(request.client.host, response.get("is_mailing")))
+        
+    return response
+
+
 @app.get("/get_gloabl_config", 
           status_code=StatusHanlder.HTTP_STATUS_200,
           responses={

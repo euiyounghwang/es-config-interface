@@ -1,5 +1,16 @@
 {
   "alert_exclude_time": "00:00:00,00:10:00",
+   "test": {
+    "mail_list": "test",
+    "cc_list": "test",
+    "sms_list": "test",
+    "dev_mail_list": "test",
+    "dev_sms_list": "test",
+    "env": "test",
+    "thread_interval": 1,
+    "is_mailing": false,
+    "is_sms": false
+   },
   "localhost": {
     "mail_list": "test@y.com",
     "cc_list": "test@y.com",

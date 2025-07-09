@@ -88,6 +88,18 @@ class ESConfigHandler(object):
         except Exception as e:
            return StatusException.raise_exception(str(e))
         
+    
+    async def get_service_mail_config_from_env(self, host):
+        ''' get_hostname_from_domain '''
+        try:
+            ''' get all hots '''
+            hosts = json_read_config("./repository/mail_config.json")
+           
+            return hosts.get(host, {})
+        
+        except Exception as e:
+           return StatusException.raise_exception(str(e))
+        
 
     async def get_service_global_config(self):
         ''' get_hostname_from_domain '''
