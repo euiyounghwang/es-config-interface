@@ -184,7 +184,7 @@ async def set_alert_config_via_url(request_ip: Request, env='dev', alert='false'
     request_json = {
         "env": str(env).lower(), 
         "alert": str(alert).lower(),
-        "message": "Security Patching" 
+        "message": "the ES team script" 
     }
     logger.info(f"request_json : {json.dumps(request_json, indent=2)}")
     response =  await ESConfigHandlerInject.set_service_alert_config(request_ip.client.host, request_json)

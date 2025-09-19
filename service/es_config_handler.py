@@ -10,6 +10,9 @@ from service.db import database
 from dotenv import load_dotenv
 
 load_dotenv()
+# load_dotenv() # will search for .env file in local folder and load variables
+# Reload the variables from your .env file, overriding existing ones
+# load_dotenv(".env_server", override=True)
 
 
 class ESConfigHandler(object):
@@ -207,6 +210,47 @@ class ESConfigHandler(object):
             alert_bool_option = str(request_json.get("alert")).lower()
             
             self.logger.info(f"client_ip : {client_ip}, env_name : {env_name}, alert_bool_option : {alert_bool_option}")
+
+            ''' 
+            *** Add logs for the alert ***
+            '''
+            try:
+                url = 'http://{}:8010/log/push_to_loki'.format(os.getenv('GRAFANA_LOKI_HOST'))
+                headers = {
+                    'Content-type': 'application/json'
+                }
+                
+                """
+                {
+                    "service": "prometheus-jenkins-script-service",
+                    "log_status": "error",
+                    "env": "dev",
+                    "host": "localhost#1",
+                    "host_name": "Data_Node_#1",
+                    "log_filename": "StreamProcessExecutor.log",
+                    "message": "PROCESS proc"
+                }
+                """
+                payload = {
+                    "service": "prometheus-jenkins-script-service",
+                    "log_status": "info",
+                    "env": env_name,
+                    "host": "",
+                    "host_name": "",
+                    "log_filename": "",
+                    "message": "[Request Client : {}] the script calls this api with alert [{}], message ['{}']".format(client_ip, alert_bool_option, request_json.get("message",""))
+                }
+                # payload = json.dumps(payload)
+                self.logger.info(f"Request the script for the alert : {url}")
+                ''' There should be an option to disable certificate verification during SSL connection. It will simplify developing and debugging process. '''
+                response = requests.post(url, json=payload, headers=headers, verify=False)
+                print(response.status_code)
+                ''' {"requestId": "25582df1-2e10-4f25-887b-c03688db3579"}'''
+
+            except Exception as e:
+                self.logger.error(e)
+                pass
+
 
             ''' --------------- '''
             ''' Validate true/false value from the parameter'''

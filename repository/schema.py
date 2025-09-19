@@ -16,7 +16,7 @@ class Sort_Order(str, Enum):
 class Alert(BaseModel):
     env: str = "prod1"
     alert: str = "false"
-    message: str = 'Security Patching'
+    message: str = 'the ES team script'
         
     def to_json(self):
         return {
