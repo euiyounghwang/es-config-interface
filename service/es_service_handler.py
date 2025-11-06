@@ -73,7 +73,7 @@ class ESServiceHandler(object):
             return "<font color='{}'>{}</font>".format(_color, status) 
         
 
-        def mail_attached(env, to, cc, message, _type):
+        def mail_attached(env, subject, to, cc, message, _type):
             user_list = to.split(",")
             self.logger.info(f"user_list : {user_list}")
             
@@ -82,7 +82,7 @@ class ESServiceHandler(object):
             you = user_list
 
             msg = MIMEMultipart('alternative')
-            msg['Subject'] = '[{}] Prometheus Monitoring Alert'.format(str(env).upper())
+            msg['Subject'] = '[{}] {}'.format(str(env).upper(), subject)
             msg['From'] = me
             msg['To'] = ','.join(you)
             msg['Cc'] = cc
@@ -137,7 +137,13 @@ class ESServiceHandler(object):
             self.logger.info(f"os.getenv : {os.getenv('SMTP_PORT')}")
 
             ''' send alert '''
-            mail_attached(request_json.get("env"), request_json.get("to_user"), request_json.get("cc_user"), request_json.get("message"), _type="mail")
+            mail_attached(request_json.get("env"), request_json.get("subject"), request_json.get("to_user"), request_json.get("cc_user"), request_json.get("message"), _type="mail")
+
+            ''' response '''
+            response_dict = {
+                 "status" : 200,
+                 "message" : "Sent an email alert successfully.."
+             }
             
         except Exception as e:
            self.logger.error(e)
