@@ -47,9 +47,9 @@ async def get_mail_config(request: Request):
     """request.client.host"""
     response =  await ESConfigHandlerInject.get_service_mail_config()
     # ip_by_host = await ESConfigHandlerInject.get_host_by_ipaddress(response)
-    if isinstance(response, dict):
+    #if isinstance(response, dict):
         # logger.info('ip_by_host [{}]'.format(ip_by_host))
-        logger.info('Remote IP Address = {}, get_mail_config [alert_exclude_time : {}]'.format(request.client.host, response.get("alert_exclude_time")))
+    #    logger.info('Remote IP Address = {}, get_mail_config [alert_exclude_time : {}]'.format(request.client.host, response.get("alert_exclude_time")))
         
     return response
 
@@ -85,9 +85,9 @@ async def get_global_config(request: Request ):
     ''' get json config file from local disk '''
     
     response =  await ESConfigHandlerInject.get_service_global_config()
-    if isinstance(response, dict):
+    #if isinstance(response, dict):
         # logger.info('get_global_config - {}'.format(json.dumps(response, indent=2)))
-        logger.info('get_mail_config - response global config with host info[{}]'.format(request.client.host))
+    #    logger.info('get_mail_config - response global config with host info[{}]'.format(request.client.host))
 
     return response
 

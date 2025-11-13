@@ -25,7 +25,7 @@ class ESServiceHandler(object):
     async def get_es_service_ssl_api(self, es_host):
         response_dict = {}
         try:
-            self.logger.info(f"es_host : {es_host}")
+            # self.logger.info(f"es_host : {es_host}")
 
             es_host = es_host.replace("http://","").replace("https://","")
             source_es_hostname = str(es_host.split(':')[0])
@@ -45,7 +45,7 @@ class ESServiceHandler(object):
             response_dict.update({"ssl_certs_expire_yyyymmdd" : int(ssl_expire_date.replace("-",""))})
         
         except Exception as e:
-           self.logger.error(e)
+        #    self.logger.error(e)
            response_dict.update({"ssl_certs_expire_date" : 'no_ssl_certs'})
            response_dict.update({"ssl_certs_expire_yyyymmdd" : 0})
            return StatusException.raise_exception(str(e))
