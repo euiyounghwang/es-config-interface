@@ -8,6 +8,7 @@ import os
 import socket
 from service.db import database
 from dotenv import load_dotenv
+from service.search_core import Search_Core
 
 load_dotenv()
 # load_dotenv() # will search for .env file in local folder and load variables
@@ -211,6 +212,14 @@ class ESConfigHandler(object):
             
             self.logger.info(f"client_ip : {client_ip}, env_name : {env_name}, alert_bool_option : {alert_bool_option}")
 
+            ''' Upload this alert logs into ZincSearch'''
+            ''' ************************************** '''
+            # Add Bulk data processing for the alert
+            Search_Obj = Search_Core(self.logger, "alert")
+            request_json.update({"client_ip" : client_ip})
+            Search_Obj.push_data_search_engine(request_json)
+            ''' ************************************** '''
+             
             ''' 
             *** Add logs for the alert ***
             '''
