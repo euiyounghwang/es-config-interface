@@ -74,3 +74,15 @@ class Log(BaseModel):
             'status' : str(self.status).upper(),
             'message' : str(self.message)
         }
+    
+
+class gRPC(BaseModel):
+    grpc_server_hostname: str = "localhost"
+    env: str = "dev"
+        
+    def to_json(self):
+        return {
+            'grpc_server_hostname' : str(self.grpc_server_hostname).lower(),
+            'env' : str(self.env).lower()
+        }
+           

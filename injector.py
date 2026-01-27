@@ -7,6 +7,7 @@ from service.es_config_handler import ESConfigHandler
 from service.es_download_handler import JobHandler
 from service.es_log_handler import ESLogConfigHandler
 from service.es_service_handler import ESServiceHandler
+from service.es_grpc_service import ESGrpcServiceHandler
 
 load_dotenv()
     
@@ -32,3 +33,4 @@ ESConfigHandlerInject = ESConfigHandler(logger)
 JobHandlerInject = JobHandler(logger)
 ESLogHandlerInject = ESLogConfigHandler(logger)
 ESServiceHandlerInject = ESServiceHandler(logger)
+ESGrpcServiceHandlerInject = ESGrpcServiceHandler(logger)

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
-from controller import (es_config_controller, es_download_controller, es_log_controller, es_service_controller)
+from controller import (es_config_controller, es_download_controller, es_log_controller, es_service_controller, es_grpc_controller)
 from config.log_config import create_log
 from threading import Thread
 import time
@@ -89,6 +89,7 @@ async def root_with_param(id):
 app.include_router(es_config_controller.app, tags=["Prometheus Configuration API"], )
 app.include_router(es_download_controller.app, tags=["Prometheus Download API"], )
 app.include_router(es_service_controller.app, tags=["Prometheus Service API"], )
+app.include_router(es_grpc_controller.app, tags=["gRPC Service API"], )
 app.include_router(es_log_controller.app, tags=["Log API"], )
 
 # _worker_thread = Thread(target=start_worker, daemon=False)
