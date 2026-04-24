@@ -55,6 +55,9 @@ pip install pytz
 
 
 ### Using Poetry: Create the virtual environment in the same directory as the project and install the dependencies:
+- poetry add --dev <패키지명>  (예: poetry add --dev pytest)
+- poetry remove --dev <패키지명>
+- poetry install --no-dev  (배포 환경에서만 사용)
 ```bash
 
 # gunicorn WSGI with async uvicorn
